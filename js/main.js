@@ -12,9 +12,9 @@ let startBtn = document.getElementById('start'),
 
     expensesItem = document.getElementsByClassName('expenses-item'),
 
-    expensesItemBtn = document.getElementsByTagName('button')[0],
-    optionalExpensesBtn = document.getElementsByTagName('button')[1],
-    countBudgetBtn = document.getElementsByTagName('button')[2],
+    expensesItemBtn = document.getElementsByTagName('button')[1],
+    optionalExpensesBtn = document.getElementsByTagName('button')[2],
+    countBudgetBtn = document.getElementsByTagName('button')[3],
 
     optionalExpensesItem = document.querySelectorAll('.optionalexpenses-item'),
 
@@ -28,10 +28,12 @@ let startBtn = document.getElementById('start'),
 
 let money, time;
 
+//Disable all other buttons until the calculation starts
 expensesItemBtn.disabled = true;
 optionalExpensesBtn.disabled = true;
 countBudgetBtn.disabled = true;
 
+//Create the appData object and receive data from the user
 startBtn.addEventListener('click', function(){
     time = prompt("Введите дату в формате YYYY-MM-DD", '');
     money = +prompt("Ваш бюджет на месяц?", '');
@@ -51,6 +53,7 @@ startBtn.addEventListener('click', function(){
     countBudgetBtn.disabled = false;
 });
 
+//Getting the items of mandatory expenses in appData
 expensesItemBtn.addEventListener('click', function() {
     let sum = 0;
     for (let i = 0; i < expensesItem.length; i++) {
@@ -70,6 +73,7 @@ expensesItemBtn.addEventListener('click', function() {
     expensesValue.textContent = sum;
 });
 
+//Getting an optional expenses and displaying them
 optionalExpensesBtn.addEventListener('click', function(){
     for (let i = 0; i < optionalExpensesItem.length; i++) {
         let opt = optionalExpensesItem[i].value;
@@ -78,6 +82,7 @@ optionalExpensesBtn.addEventListener('click', function(){
     }
 });
 
+//Calculating the income level
 countBudgetBtn.addEventListener('click', function() {
     if (appData.budg != undefined) {
         appData.moneyPerDay = ((appData.budg - +expensesValue.textContent)/ 30).toFixed();
@@ -87,7 +92,7 @@ countBudgetBtn.addEventListener('click', function() {
             levelValue.textContent = "Минимальный уровень достатка";
         } else if (appData.moneyPerDay > 500 && appData.moneyPerDay < 2000) {
             levelValue.textContent = "Средний уровень достатка";
-        } else if (appData.moneyPerDay > 2000) {
+        } else if (appData.moneyPerDay >= 2000) {
             levelValue.textContent = "Высокий уровень достатка";
         } else {
             levelValue.textContent = "Произошла ошибка";
@@ -97,6 +102,7 @@ countBudgetBtn.addEventListener('click', function() {
     }
 });
 
+//Getting the optional expences data from the input, then formatting and transfering
 if (incomeItem !==null){
     incomeItem.addEventListener('input', function() {
     let items = incomeItem.value;
@@ -106,6 +112,7 @@ if (incomeItem !==null){
     }
 })};
 
+//Savings checkbox switcher
 checkSavings.addEventListener('click', function() {
     if (appData.savings == true) {
         appData.savings = false;
@@ -114,6 +121,7 @@ checkSavings.addEventListener('click', function() {
     }
 });
 
+// Сalculating the amount of savings
 sumValue.addEventListener('input', function() {
     if (appData.savings == true) {
         let sum = +sumValue.value,
@@ -127,6 +135,7 @@ sumValue.addEventListener('input', function() {
     }
 });
 
+// Сalculating the percentage of savings
 percentValue.addEventListener('input', function() {
     if (appData.savings == true) {
         let sum = +sumValue.value,
@@ -148,9 +157,3 @@ const appData = {
     income: [],
     savings: false    
 };
-
-    /* for (var key in appData) {
-        console.log ( "Наша программа включает в себя данные: " + key + " - " + appData[key] );
-    };
-
-    console.log (appData.budg + " " + appData.timeData); */
